@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load static %}
+        
+{% block banner %}
+  <div id="index-banner" class="parallax-container">
+    <div class="section no-pad-bot">
+    </div>
+    <div class="parallax">
+      {% if article.picture %}
+        <img src="{{ article.picture.url }}" alt="Unsplashed background img 1">
+      {% else %}
+        <img src="{% static 'img/default-thumbnail.jpg' %}">
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+      <div class="col s12 m12">
+        <div class="card">
+          <ul class="collection">
+            <li class="collection-item avatar">
+              <i class="material-icons circle">account_circle</i>
+              <span style="font-size: 20px; font-weight: bold;" class="title">Category:</span>
+              <span style="font-size: 18px;" class="title">{{ article.category }}</span>
+              <span class="title secondary-content">{{ article.publication_date | date:"d - M - Y" }}</span>
+              <p>{{ article.author }}</p>
+            </li>
+          </ul>
+
+          <div class="card-panel">
+            
+            <h2 class="header">{{ article.title }}</h2>
+
+            {{ article.content | safe }}
+
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="card-action">
+            <span style="font-size: 20px;" class="title">Tags: </span>
+            
+            {% for tag in article.tags.all %}
+                <div class="chip"><a href="{{ tag.get_absolute_url }}">{{ tag.title }}</a></div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+            
+
+{% endblock %}
+
+

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+  <h4>Latest posts</h4>
+  <div class="divider"></div>
+
+
+   <div class="row">
+
+  {% for article in articles %}
+      <div class="col s12 m6">
+      <div class="card">
+        <div class="card-image">
+        {% if article.picture %}
+          <a href="{{ article.get_absolute_url }}"><img src="{{ article.picture.url }}"></a>
+          <a href="{{ article.get_absolute_url }}"><span class="card-title">{{ article.title }}</span></a>
+        {% else %}
+          <img src="{% static 'img/default-thumbnail.jpg' %}">
+        {% endif %}
+        </div>
+        <div class="card-content">
+          {{ article.content|truncatechars:250 | safe }}
+        </div>
+        <div class="card-action">
+          <a href="{{ article.get_absolute_url }}">Read more</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+    
+  
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block pagination %}
+  <ul class="pagination center-align">
+    {% if articles.has_previous %}
+      <a href="?page={{ articles.previous_page_number }}" class="waves-effect waves-light btn"><i class="material-icons left">arrow_back</i>Back</a>
+    {% endif %}
+
+{% if articles.has_next %}
+<a href="?page={{ articles.next_page_number }}" class="waves-effect waves-light btn"><i class="material-icons right">add</i>Load more</a>
+  </ul>
+{% endif %} 
+
+{% endblock %}
+
+
+
+ 
