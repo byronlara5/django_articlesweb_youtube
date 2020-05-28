@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+        
+{% block content %}
+
+<div class="col s12">
+<div class="row">
+    <div class="col s12 m12">
+      <div class="card">
+        <div class="card-image">
+          <img src="{% static 'img/profile_banner.jpg' %}">
+          {% if profile.picture %}
+          <a href="{{ profile.get_absolute_url }}"><img id="img-circle-custom-profile" src="{{ profile.picture.url }}"></a>
+          {% else %}
+          <img id="img-circle-custom-profile" src="{% static 'img/person.jpg' %}">
+          {% endif %}
+          <h1 style="font-weight: bold;" class="card-title">{% if profile.first_name %}{{ profile.first_name }} {{ profile.last_name }}{% endif %}</h1>
+        </div>
+
+
+
+
+        <div class="card-action">
+
+          {% if user.is_authenticated and user == profile.user %}
+          <a href="{% url 'edit-profile' %}" class="waves-effect waves-light btn right">Edit Profile</a>
+          {% endif %}
+
+        	{% if profile.location %}
+          <h6 style="font-weight: bold;">Location:</h6>
+        	<span>{{ profile.location }}</span>
+          {% endif %}
+
+          {% if profile.url %}
+        	<h6 style="font-weight: bold;">URL:</h6>
+        	<span>{{ profile.url }}</span>
+          {% endif %}
+
+          {% if profile.profile_info %}
+        	<h6 style="font-weight: bold;">BIO:</h6>
+        	<span>{{ profile.profile_info }}</span>
+          {% endif %}
+          
+        </div>
+        <div class="card-content">
+        	<h1 style="font-weight: bold;" class="card-title">Favorites articles</h1>
+
+        	<div class="row">
+				   
+				{% for article in articles %}
+				   <div class="col s12 m4">
+				      <div class="card">
+				        <div class="card-image">
+				        {% if article.picture %}
+				          <a href="{{ article.get_absolute_url }}"><img src="{{ article.picture.url }}"></a>
+        				{% else %}
+         					<img src="{% static 'img/default-thumbnail.jpg' %}">
+        				{% endif %}
+        					<a href="{{ article.get_absolute_url }}"><span class="card-title">{{ article.title }}</span></a>
+				        </div>
+				        <div class="card-content">
+				          {{ article.content|truncatechars:150 | safe }}
+				        </div>
+				        <div class="card-action">
+          					<a href="{{ article.get_absolute_url }}">Read more</a>
+        				</div>
+				    </div>
+				  </div>
+				{% endfor %}
+          
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="col s12">
+
+
+{% endblock %}
+
+{% block pagination %}
+  <ul class="pagination center-align">
+    {% if articles.has_previous %}
+      <a href="?page={{ articles.previous_page_number }}" class="waves-effect waves-light btn"><i class="material-icons left">arrow_back</i>Back</a>
+    {% endif %}
+
+{% if articles.has_next %}
+<a href="?page={{ articles.next_page_number }}" class="waves-effect waves-light btn"><i class="material-icons right">add</i>Load more</a>
+  </ul>
+{% endif %} 
+
+{% endblock %}

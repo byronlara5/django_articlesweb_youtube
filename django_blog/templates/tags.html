@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+        
+{% block banner %}
+ <div class="row">
+        <div style="background-color: #ddd;" class="col s12 m12 center-align">
+          <i class="material-icons medium">label</i>
+          <h5>-----Tag-----</h5>
+          <h3>Technology</h3>
+        </div>
+ </div>
+{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+
+  {% for article in articles %}
+      <div class="col s12 m6">
+      <div class="card">
+        <div class="card-image">
+        {% if article.picture %}
+          <a href="{{ article.get_absolute_url }}"><img src="{{ article.picture.url }}"></a>
+          <a href="{{ article.get_absolute_url }}"><span class="card-title">{{ article.title }}</span></a>
+        {% else %}
+          <img src="{% static 'img/default-thumbnail.jpg' %}">
+        {% endif %}
+        </div>
+        <div class="card-content">
+          {{ article.content|truncatechars:250  }}
+        </div>
+        <div class="card-action">
+          <a href="{{ article.get_absolute_url }}">Read more</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  
+    </div>
+{% endblock %}
